@@ -8,33 +8,35 @@ const JWT_refreshSECRET = process.env.JWT_refreshSECRET || 'defaultrefreshsecret
 const generateToken = (usuario: IUsuario, res: Response): string =>{
     const payload = { id: usuario._id.toString(), rol: usuario.rol };
     
-const token : string = sign({payload}, JWT_SECRET, {expiresIn: "15s"});
+    // Aumentamos el tiempo de expiración a 1 hora para mejor experiencia de usuario
+    const token : string = sign({payload}, JWT_SECRET, {expiresIn: "1h"});
 
-return token;
+    return token;
 };
+
 const generateRefreshToken = (usuario: IUsuario, res: Response): string =>{
     const payload = { id: usuario._id.toString(), rol : usuario.rol }; 
-    const refreshToken : string = sign({payload}, JWT_refreshSECRET, {expiresIn: "1y"});
+    const refreshToken : string = sign({payload}, JWT_refreshSECRET, {expiresIn: "7d"});
 
-return refreshToken;
+    return refreshToken;
 }       
 
 const verifyToken = (token : string) =>{
     try {
         const decoded = verify(token, JWT_SECRET);
         return decoded;
-} 
-    catch (error) {
+    } catch (error) {
         return null;
-}  
+    }  
 };
+
 const verifyRefreshToken = (refreshToken : string) =>{
     try {
         const decoded = verify(refreshToken, JWT_refreshSECRET);
         return decoded;
-} 
-    catch (error) {
+    } catch (error) {
         return null;
     }
 }   
-export{generateToken, verifyToken, generateRefreshToken, verifyRefreshToken}; 
+
+export{generateToken, verifyToken, generateRefreshToken, verifyRefreshToken};
