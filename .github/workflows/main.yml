@@ -28,6 +28,11 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@v3
 
+    # NOU PAS: Extreu la primera paraula del missatge del commit utilitzant Bash
+    - name: Extract version tag
+      id: extract_tag
+      run: echo "version_tag=$(echo '${{ github.event.head_commit.message }}' | cut -d ' ' -f 1)" >> $GITHUB_OUTPUT
+
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v6
@@ -35,7 +40,8 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/movere-frontend:${{ github.event.head_commit.message }}
+        # ÚS DE LA NOVA VARIABLE DE SORTIDA
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/movere-frontend:${{ steps.extract_tag.outputs.version_tag }}
 
     - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}  
+      run: echo ${{ steps.docker_build.outputs.digest }}
