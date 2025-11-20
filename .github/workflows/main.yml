@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 jobs:
 
-  build:
+  build: 
     runs-on: ubuntu-latest
     # FIX: Hem eliminat les cometes dobles. L'expressió 'startsWith' s'escriu directament.
     if: startsWith(github.event.head_commit.message, 'v')
