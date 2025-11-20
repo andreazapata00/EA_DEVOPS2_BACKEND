@@ -1,14 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src", // <-- Este es el origen de la advertencia
-    "strict": true,
-    "esModuleInterop": true
-  },
-  "exclude": [
-    "node_modules",
-    "eslint.config.mts" // <-- ¡Esto resuelve tu problema!
-  ]
-}
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "strict": true,
+      "esModuleInterop": true
+    }
+  }
+  
