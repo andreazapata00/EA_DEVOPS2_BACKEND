@@ -4,11 +4,11 @@ import {sign, verify} from 'jsonwebtoken';
 import {IUsuario} from '../models/usuario'; 
 import type {Response} from 'express';
 
-const JWT_SECRET = process.env.JWT_SECRET   || 'defaultsecret';
+const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
 const JWT_refreshSECRET = process.env.JWT_refreshSECRET || 'defaultrefreshsecret';
 
 // CORRECCIÓN 4: Cambiamos 'res' por '_res' para indicar que no se usa.
-const generateToken = (usuario: IUsuario, _res: Response): string =>{ 
+const generateToken = (usuario: IUsuario): string =>{ 
     const payload = { id: usuario._id.toString(), rol: usuario.rol };
     // Aumentamos el tiempo de expiración a 1 hora para mejor experiencia de usuario
     const token : string = sign({payload}, JWT_SECRET, {expiresIn: "1h"});
@@ -17,7 +17,7 @@ const generateToken = (usuario: IUsuario, _res: Response): string =>{
 };
 
 // CORRECCIÓN 3: Cambiamos 'res' por '_res' para indicar que no se usa.
-const generateRefreshToken = (usuario: IUsuario, _res: Response): string =>{ 
+const generateRefreshToken = (usuario: IUsuario): string =>{ 
     const payload = { id: usuario._id.toString(), rol : usuario.rol }; 
     const refreshToken : string = sign({payload}, JWT_refreshSECRET, {expiresIn: "7d"});
 
@@ -29,7 +29,7 @@ try {
     const decoded = verify(token, JWT_SECRET);
     return decoded;
 // CORRECCIÓN 2: Cambiamos 'error' por '_error' para indicar que no se usa.
-    } catch (_error) { 
+    } catch { 
         return null;
     }
 };
@@ -39,7 +39,7 @@ try {
     const decoded = verify(refreshToken, JWT_refreshSECRET);
     return decoded;
 // CORRECCIÓN 1: Cambiamos 'error' por '_error' para indicar que no se usa.
-} catch (_error) { 
+} catch{
     return null;
 }
 } 
